@@ -14,19 +14,23 @@ const LEVEL_DURATION = 30;
 export default function Level2() {
     const [que, setQue] = useState('');
     const [answers, setAnswers] = useState([]);
+    const [solution,setSolution] = useState(0);
     const [score, setScore] = useState(0);
     const [timer, setTimer] = useState(LEVEL_DURATION);
     const [errorMessage, setErrorMessage] = useState('');
     const [questionsAnswered, setQuestionsAnswered] = useState(0);
+    
 
     const fetchQuestion = async () => {
         try {
-            console.log('invoking game function.');
+            // console.log('invoking game function.');
             const response = await gameQuestion();
             console.log(response);
             setQue(response.question);
+            setSolution(response.solution);
 
             const answersArray = answerGenerate(response.solution);
+            setQuestionsAnswered((prev) => prev + 1)
             setAnswers(answersArray);
             setErrorMessage(''); 
         } catch (error) {
@@ -47,7 +51,7 @@ export default function Level2() {
         } else {
             console.log('Game Over. Player answered 10 questions.');
         }
-    }, [questionsAnswered]);
+    }, []);
 
     useEffect(() => {
         if (timer === 0 && questionsAnswered < MAX_QUESTIONS) {
@@ -56,10 +60,16 @@ export default function Level2() {
     }, [timer]);
 
     const handleAnswerClick = (selectedAnswer) => {
-        const isCorrect = selectedAnswer === que.solution;
+        console.log(selectedAnswer);
+        console.log(que);
+
+        const isCorrect = selectedAnswer === solution;
+
+        console.log(isCorrect);
 
         if (isCorrect) {
-            setScore((prevScore) => prevScore + 1);
+            setScore((prevScore) => prevScore +1);
+            console.log(score);
             setErrorMessage(''); 
         } else {
             setErrorMessage('Wrong answer! Try again.');
@@ -67,11 +77,11 @@ export default function Level2() {
 
         setTimer(LEVEL_DURATION);
 
-        if (isCorrect) {
-            setQuestionsAnswered((prev) => prev + 1);
-        }
+        // if (isCorrect) {
+        //     setQuestionsAnswered((prev) => prev + 1);
+        // }
 
-        if (questionsAnswered + 1 === MAX_QUESTIONS) {
+        if (questionsAnswered +2 === MAX_QUESTIONS) {
             console.log('Game Over. Player answered 10 questions.');
         } else {
             fetchQuestion();
