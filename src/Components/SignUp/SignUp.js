@@ -13,17 +13,16 @@ import bgImg from '../../asset/Img/R.png';
 import { useState } from 'react';
 import SignUpService from '../../utill/SignUpService';
 
-
-
 const defaultTheme = createTheme();
 
-export default function Login() {
-
+export default function SignUp() {
   const [userName, setUserName] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
+
     const signUpData = {
       username: userName,
       name: name,
@@ -31,20 +30,13 @@ export default function Login() {
     };
 
     try {
-      const response = await SignUpService.test();
-      // Handle the response as needed
-      console.log(response);
-
-      // Clear the input fields after successful registration
-
+      await SignUpService(signUpData);
       setUserName('');
       setName('');
       setPassword('');
     } catch (error) {
-      // Handle the registration error
       console.error(error);
     }
-
   };
 
   return (
@@ -121,7 +113,6 @@ export default function Login() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={handleSubmit}
               >
                 Sign Up
               </Button>

@@ -12,12 +12,14 @@ export default function Level1() {
     const [que, setQue] = useState('');
     const [answers, setAnswers] = useState([]);
     const [score, setScore] = useState(0);
+    const [solution,setSolution] = useState(0);
 
     const x = async () => {
         console.log('invoking game function.');
         const response = await gameQuestion();
         console.log(response);
         setQue(response.question);
+        setSolution(response.solution);
 
         const answersArray = answerGenerate(response.solution);
         setAnswers(answersArray);
@@ -29,7 +31,7 @@ export default function Level1() {
 
     const handleAnswerClick = (selectedAnswer) => {
         // Check if the selected answer is correct
-        const isCorrect = selectedAnswer === que.solution;
+        const isCorrect = selectedAnswer === solution;
 
         // Update score if correct
         if (isCorrect) {
